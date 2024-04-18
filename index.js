@@ -6,7 +6,9 @@ const cors = require('cors');
 const mqtt = require('mqtt');
 const io = require('socket.io-client');
 
-app.use(cors());
+app.use(cors({
+    origin: '*'
+  }));
 //middlewares
 app.use(express.json());
 
@@ -22,7 +24,7 @@ app.use('/auth', authRouter);
 app.use('/usuarios', usuariosRouter);
 
 app.listen(PORT, () => {
-    console.log('API escuchando');
+    console.log('API escuchando ',PORT);
 });
 
 //MQTT
