@@ -6,7 +6,7 @@ const cors = require('cors');
 const mqtt = require('mqtt');
 const io = require('socket.io-client');
 
-app.use(cors())
+app.use(cors());
 //middlewares
 app.use(express.json());
 
@@ -21,14 +21,13 @@ app.use('/duenios', dueniosRouter);
 app.use('/auth', authRouter);
 app.use('/usuarios', usuariosRouter);
 
-
 app.listen(PORT, () => {
-    console.log('API escuchando')
+    console.log('API escuchando');
 });
 
 //MQTT
 //Configuración del cliente MQTT
-const mqttBroker = "mqtt://54.198.85.178"; 
+const mqttBroker = "mqtt://srv502440.hstgr.cloud"; 
 const mqttOptions = {
     username: "esp32",
     password: "1234"
@@ -37,7 +36,7 @@ const mqttOptions = {
 const mqttClient = mqtt.connect(mqttBroker, mqttOptions);
 
 //Configuración del cliente Socket.IO
-const socket = io("http://localhost:3001" , {
+const socket = io("http://54.235.163.43:3000", {
     transports: ['websocket'],
 }); 
 
@@ -46,7 +45,7 @@ mqttClient.on('connect', () => {
     console.log('Conectado al servidor MQTT');
 
     //suscribirse a un tema MQTT
-    mqttClient.subscribe('temperatura');
+    mqttClient.subscribe('/sensores');
 });
 
 //Manejar mensajes recibidos en el tema suscrito MQTT
@@ -60,11 +59,10 @@ mqttClient.on('message', (topic, message) => {
 
     //Manejar eventos de conexión y desconexión del cliente socket.io
     socket.on('connect', () => {
-         console.log(`Conecatdo al servidor Socket.IO`)  
+         console.log(`Conectado al servidor Socket.IO`)  
     });
 
     socket.on('disconnect', () =>{
         console.log('Desconectado del servidor Socket.IO')
     })
-})
-//Terminación de MQTT
+});
